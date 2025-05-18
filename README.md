@@ -1,10 +1,10 @@
-# 💼 Investment & Portfolio Tracker
+# Investment & Portfolio Tracker
 
 A full-stack application to help users manage and analyze their investments across multiple financial instruments like stocks, mutual funds, and fixed deposits. Built by **Team Zeta Horizon** as part of the Capstone Internship Project.
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 This repository contains both frontend and backend code:
 ```
@@ -21,7 +21,7 @@ investment-portfolio-tracker/
 
 ---
 
-## 👨‍💻 Team Members & Modules
+## Team Members & Modules
 
 | Name                     | Module Number | Module Description                       |
 |--------------------------|---------------|------------------------------------------|
@@ -33,7 +33,7 @@ investment-portfolio-tracker/
 
 ---
 
-## 🛠️ Technologies Used
+## Technologies Used
 Backend: Java, Spring Boot, Spring Data JPA, MySQL, JUnit, Lombok, Docker
 
 Frontend: Vue.js
@@ -44,7 +44,7 @@ Tools: GitHub, Postman, Jira
 
 ---
 
-## 🗃️ Database Setup
+## Database Setup
 
 Create a database in your system before staring the backend:
 ``` bash
@@ -53,9 +53,9 @@ CREATE DATABASE investment_tracker;
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
-### 📦 Prerequisites
+### Prerequisites
 
 - Java 17+
 - Node.js 18+
@@ -64,7 +64,7 @@ CREATE DATABASE investment_tracker;
 - Git
 
 
-### 🔧 How To Run Backend (Spring Boot)
+### How To Run Backend (Spring Boot)
 
 Step 1 : Clone the repository:
 ``` bash 
@@ -83,26 +83,26 @@ Step 3 : Run the application using Maven or your IDE:
 
 API will run on: http://localhost:8080
 
-### 🌐 How To Run Frontend (Vue.js)
+### How To Run Frontend (Vue.js)
 
 
 
 ---
 
-## 🛠️ Features
-✅ User registration/login 
+## Features
+1. User registration/login 
 
 ---
 
-## 📊 Architecture & Design
-🧱 Layered Architecture: Controller → Service → Repository
+## Architecture & Design
+Layered Architecture: Controller → Service → Repository
 
 ---
 
-## 💻 GitHub Collaboration Workflow
+## GitHub Collaboration Workflow
 All team members will push code to their own branches. Pull Requests (PRs) must be reviewed and merged by another team member, not the person who raised the PR.
 
-### 🔁 Git Workflow
+### Git Workflow
 
 ``` bash
 # Clone the repository (only the first time)
@@ -123,7 +123,7 @@ git commit -m "Add: feature description here"
 git push origin your-name/feature-name
 ``` 
 
-### 📌 Pull Request (PR) Process
+### Pull Request (PR) Process
 
 1. Go to GitHub and create a Pull Request from your branch to the main branch.
 
@@ -138,16 +138,16 @@ git pull origin main
 
 --- 
 
-## 📅 Project Management
+## Project Management
 
-✅ Kanban Board: Jira
+1. Kanban Board: Jira
 
-✅ Checklist Tracking: Shared Docs
+2. Checklist Tracking: Shared Docs
 
 ---
 
-## 📎 Documentation Index
+## Documentation Index
 
-ER Diagram
+1. ER Diagram
 
 ---
