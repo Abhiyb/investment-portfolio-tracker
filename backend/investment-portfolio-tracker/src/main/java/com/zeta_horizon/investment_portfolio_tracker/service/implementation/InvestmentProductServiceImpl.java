@@ -4,7 +4,7 @@ import com.zeta_horizon.investment_portfolio_tracker.dto.*;
 import com.zeta_horizon.investment_portfolio_tracker.enums.InvestmentType;
 import com.zeta_horizon.investment_portfolio_tracker.enums.RiskLevel;
 import com.zeta_horizon.investment_portfolio_tracker.exception.ResourceNotFoundException;
-import com.zeta_horizon.investment_portfolio_tracker.model.InvestmentProduct;
+import com.zeta_horizon.investment_portfolio_tracker.entity.InvestmentProduct;
 import com.zeta_horizon.investment_portfolio_tracker.repository.InvestmentProductRepository;
 import com.zeta_horizon.investment_portfolio_tracker.service.InvestmentProductService;
 import org.modelmapper.ModelMapper;

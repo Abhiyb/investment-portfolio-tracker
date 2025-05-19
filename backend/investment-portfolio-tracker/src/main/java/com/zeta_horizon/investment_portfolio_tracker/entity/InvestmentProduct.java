@@ -1,4 +1,4 @@
-package com.zeta_horizon.investment_portfolio_tracker.model;
+package com.zeta_horizon.investment_portfolio_tracker.entity;
 
 import com.zeta_horizon.investment_portfolio_tracker.enums.InvestmentType;
 import com.zeta_horizon.investment_portfolio_tracker.enums.RiskLevel;
