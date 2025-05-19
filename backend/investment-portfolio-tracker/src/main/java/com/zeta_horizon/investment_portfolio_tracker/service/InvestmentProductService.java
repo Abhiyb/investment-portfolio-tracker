@@ -9,6 +9,8 @@ import java.util.List;
 public interface InvestmentProductService {
     List<InvestmentProductListDto> getAllActiveProducts();
 
+    List<InvestmentProductListDto> getAllProducts();
+
     InvestmentProductDto getProductById(Long id);
 
     InvestmentProductDto createProduct(InvestmentProductCreateDto createDto);

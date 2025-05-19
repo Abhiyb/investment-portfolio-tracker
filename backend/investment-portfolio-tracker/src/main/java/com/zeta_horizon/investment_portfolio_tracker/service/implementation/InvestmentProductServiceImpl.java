@@ -39,6 +39,13 @@ public class InvestmentProductServiceImpl implements InvestmentProductService {
     }
 
     @Override
+    public List<InvestmentProductListDto> getAllProducts() {
+        return investmentProductRepository.findAll().stream()
+                .map(product -> modelMapper.map(product, InvestmentProductListDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public InvestmentProductDto getProductById(Long id) {
         InvestmentProduct product = investmentProductRepository.findById(id)
@@ -94,11 +101,9 @@ public class InvestmentProductServiceImpl implements InvestmentProductService {
     @Override
     public void deleteProduct(Long id) {
         // Soft delete - just set isActive to false
-        InvestmentProduct existingProduct = investmentProductRepository.findByIdAndIsActiveTrue(id);
-        if (existingProduct == null) {
-            throw new ResourceNotFoundException("Investment product not found with id: " + id);
-        }
-        System.out.println(existingProduct);
+        InvestmentProduct existingProduct = investmentProductRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Investment product not found with id: " + id)
+        );
         existingProduct.setActive(false);
         investmentProductRepository.save(existingProduct);
     }
