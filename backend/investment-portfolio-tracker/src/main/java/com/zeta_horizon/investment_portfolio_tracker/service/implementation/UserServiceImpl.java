@@ -1,4 +1,4 @@
-package com.zeta_horizon.investment_portfolio_tracker.service.impl;
+package com.zeta_horizon.investment_portfolio_tracker.service.implementation;
 
 import com.zeta_horizon.investment_portfolio_tracker.entity.User;
 import com.zeta_horizon.investment_portfolio_tracker.repository.UserRepository;
@@ -40,11 +40,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
     public String verify(User user) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(),user.getPasswordHash()));
 
         if(authentication.isAuthenticated())
-            return JWTService.generateToken(user);
+            return JWTService.generateToken(getUserByEmail(user.getEmail()));
 
         return "failure";
     }

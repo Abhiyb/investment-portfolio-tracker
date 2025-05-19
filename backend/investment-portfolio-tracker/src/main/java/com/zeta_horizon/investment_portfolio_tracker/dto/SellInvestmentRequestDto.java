@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 public class SellInvestmentRequestDto {
 
     @NotNull(message = "Investment product ID is required")
-    private Long investmentProductId;
+    private Integer investmentProductId;
 
     @NotNull(message = "Units are required")
     @Min(value = 0, message = "Units must be positive")

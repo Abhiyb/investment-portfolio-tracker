@@ -9,13 +9,15 @@ import java.util.List;
 public interface InvestmentProductService {
     List<InvestmentProductListDto> getAllActiveProducts();
 
-    InvestmentProductDto getProductById(Long id);
+    List<InvestmentProductListDto> getAllProducts();
+
+    InvestmentProductDto getProductById(Integer id);
 
     InvestmentProductDto createProduct(InvestmentProductCreateDto createDto);
 
-    InvestmentProductDto updateProduct(Long id, InvestmentProductUpdateDto updateDto);
+    InvestmentProductDto updateProduct(Integer id, InvestmentProductUpdateDto updateDto);
 
-    void deleteProduct(Long id);
+    void deleteProduct(Integer id);
 
     List<InvestmentProductListDto> filterProducts(InvestmentProductFilterDto filterDto);
 

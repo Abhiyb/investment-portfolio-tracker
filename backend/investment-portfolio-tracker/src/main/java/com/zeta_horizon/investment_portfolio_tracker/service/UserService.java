@@ -14,5 +14,7 @@ public interface UserService {
 
     public List<User> getAllUsers();
 
+    public User getUserByEmail(String email);
+
     String verify(User user);
 }

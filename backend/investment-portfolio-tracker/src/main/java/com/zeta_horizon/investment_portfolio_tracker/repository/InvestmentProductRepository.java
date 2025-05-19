@@ -10,21 +10,20 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.UUID;
+import java.util.Optional;
 
 @Repository
-public interface InvestmentProductRepository extends JpaRepository<InvestmentProduct, Long> {
+public interface InvestmentProductRepository extends JpaRepository<InvestmentProduct, Integer> {
     // Find all active products
     List<InvestmentProduct> findByIsActiveTrue();
+
+    Optional<InvestmentProduct> findByIdAndIsActiveTrue(Integer Id);
 
     // Find by type
     List<InvestmentProduct> findByTypeAndIsActiveTrue(InvestmentType type);
 
     // Find by risk level
     List<InvestmentProduct> findByRiskLevelAndIsActiveTrue(RiskLevel riskLevel);
-
-    // Find by minimum investment amount
-//    List<InvestmentProduct> findByMinInvestmentLessThanEqualAndIsActiveTrue(BigDecimal maxAmount);
 
     // Search by name
     List<InvestmentProduct> findByNameContainingIgnoreCaseAndIsActiveTrue(String name);

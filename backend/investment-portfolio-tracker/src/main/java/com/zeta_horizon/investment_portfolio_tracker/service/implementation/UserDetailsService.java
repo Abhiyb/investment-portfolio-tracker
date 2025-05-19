@@ -1,4 +1,4 @@
-package com.zeta_horizon.investment_portfolio_tracker.service.impl;
+package com.zeta_horizon.investment_portfolio_tracker.service.implementation;
 
 import com.zeta_horizon.investment_portfolio_tracker.entity.User;
 import com.zeta_horizon.investment_portfolio_tracker.entity.UserPrincipal;

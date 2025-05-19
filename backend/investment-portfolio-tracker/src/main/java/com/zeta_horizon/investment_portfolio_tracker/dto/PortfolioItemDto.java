@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Builder
 public class PortfolioItemDto {
     private Integer id;
-    private Long investmentProductId;
+    private Integer investmentProductId;
     private String investmentProductName;
     private String type;
     private String riskLevel;

@@ -1,4 +1,4 @@
-package com.zeta_horizon.investment_portfolio_tracker.service.impl;
+package com.zeta_horizon.investment_portfolio_tracker.service.implementation;
 
 import com.zeta_horizon.investment_portfolio_tracker.dto.*;
 import com.zeta_horizon.investment_portfolio_tracker.entity.InvestmentProduct;

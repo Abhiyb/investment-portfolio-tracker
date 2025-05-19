@@ -1,7 +1,8 @@
 package com.zeta_horizon.investment_portfolio_tracker.config;
 
+//import com.zeta_horizon.investment_portfolio_tracker.filters.JWTFilter;
 import com.zeta_horizon.investment_portfolio_tracker.filters.JWTFilter;
-import com.zeta_horizon.investment_portfolio_tracker.service.impl.UserDetailsService;
+import com.zeta_horizon.investment_portfolio_tracker.service.implementation.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -21,6 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfiguration {
 
     @Autowired
@@ -36,8 +39,9 @@ public class SecurityConfiguration {
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("register","login").permitAll() // restrict this endpoint
-                        .anyRequest().authenticated()                     // allow others
+                        .requestMatchers("/auth/register", "/auth/login").permitAll()
+                        .requestMatchers("/admin/users").hasRole("ADMIN")
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
