@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(),user.getPasswordHash()));
 
         if(authentication.isAuthenticated())
-            return JWTService.generateToken(user);
+            return JWTService.generateToken(getUserByEmail(user.getEmail()));
 
         return "failure";
     }

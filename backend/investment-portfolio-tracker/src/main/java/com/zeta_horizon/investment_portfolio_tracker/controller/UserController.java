@@ -6,6 +6,7 @@ import com.zeta_horizon.investment_portfolio_tracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,29 +21,28 @@ public class UserController {
     JWTService jwtService;
 
     @GetMapping("/user/profile")
-    public User getUserProfile(@RequestHeader("Authorization") String bearerToken){
+    public User getUserProfile(@RequestHeader("Authorization") String bearerToken) {
         String token = bearerToken.substring(7);
         return userService.getUserByEmail(jwtService.extractUsername(token));
     }
 
-
-    @GetMapping("/users")
-    public List<User> homeScreen(){
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/users")
+    public List<User> homeScreen() {
         return userService.getAllUsers();
     }
 
     @PostMapping("/auth/login")
-    public String loginUser(@RequestBody User user){
+    public String loginUser(@RequestBody User user) {
         return userService.verify(user);
     }
 
     @PostMapping("/auth/register")
-    public ResponseEntity<?> registerUser(@RequestBody User user){
-        try{
-           return new ResponseEntity<>(userService.saveUser(user), HttpStatus.CREATED);
-        }
-        catch (Exception e){
-            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> registerUser(@RequestBody User user) {
+        try {
+            return new ResponseEntity<>(userService.saveUser(user), HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }
