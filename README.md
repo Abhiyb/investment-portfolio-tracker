@@ -51,6 +51,27 @@ Create a database in your system before staring the backend:
 CREATE DATABASE investment_tracker;
 ```
 
+### How to Configure Springboot for MySQL?..
+
+Step 1 : Use application.properties with placeholders (already done in main branch)
+``` bash
+spring.datasource.url=${DB_URL}
+spring.datasource.username=${DB_USERNAME}
+spring.datasource.password=${DB_PASSWORD}
+```
+
+Step 2 : Use .env file
+Create a .env file (never commit this file):
+``` bash
+DB_URL=jdbc:mysql://localhost:3306/investment_tracker
+DB_USERNAME=root
+DB_PASSWORD=secret
+```
+
+Step 3 : Add .env to .gitignore
+
+Step 4 : Add .env file to environment variables. Application name in top right corner -> edit configurations -> choose the in environment variables add .env file.
+
 ---
 
 ## Getting Started
