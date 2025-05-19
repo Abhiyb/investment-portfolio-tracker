@@ -1,14 +1,12 @@
 package com.zeta_horizon.investment_portfolio_tracker.controller;
 
 import com.zeta_horizon.investment_portfolio_tracker.entity.User;
+import com.zeta_horizon.investment_portfolio_tracker.service.JWTService;
 import com.zeta_horizon.investment_portfolio_tracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,6 +15,16 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    JWTService jwtService;
+
+    @GetMapping("/user/profile")
+    public User getUserProfile(@RequestHeader("Authorization") String bearerToken){
+        String token = bearerToken.substring(7);
+        return userService.getUserByEmail(jwtService.extractUsername(token));
+    }
+
 
     @GetMapping("/users")
     public List<User> homeScreen(){
