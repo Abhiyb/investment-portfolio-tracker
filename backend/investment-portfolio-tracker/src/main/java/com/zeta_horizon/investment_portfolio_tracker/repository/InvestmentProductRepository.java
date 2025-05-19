@@ -2,7 +2,7 @@ package com.zeta_horizon.investment_portfolio_tracker.repository;
 
 import com.zeta_horizon.investment_portfolio_tracker.enums.InvestmentType;
 import com.zeta_horizon.investment_portfolio_tracker.enums.RiskLevel;
-import com.zeta_horizon.investment_portfolio_tracker.model.InvestmentProduct;
+import com.zeta_horizon.investment_portfolio_tracker.entity.InvestmentProduct;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
