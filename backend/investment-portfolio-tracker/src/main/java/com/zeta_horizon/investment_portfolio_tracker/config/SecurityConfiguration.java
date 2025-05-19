@@ -1,7 +1,8 @@
 package com.zeta_horizon.investment_portfolio_tracker.config;
 
+//import com.zeta_horizon.investment_portfolio_tracker.filters.JWTFilter;
 import com.zeta_horizon.investment_portfolio_tracker.filters.JWTFilter;
-import com.zeta_horizon.investment_portfolio_tracker.service.impl.UserDetailsService;
+import com.zeta_horizon.investment_portfolio_tracker.service.implementation.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,8 +37,8 @@ public class SecurityConfiguration {
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("register","login").permitAll() // restrict this endpoint
-                        .anyRequest().authenticated()                     // allow others
+                        .requestMatchers("/auth/register", "/auth/login").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
