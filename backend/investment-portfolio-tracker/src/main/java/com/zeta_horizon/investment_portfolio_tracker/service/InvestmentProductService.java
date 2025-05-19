@@ -1,4 +1,25 @@
 package com.zeta_horizon.investment_portfolio_tracker.service;
 
+import com.zeta_horizon.investment_portfolio_tracker.dto.*;
+import com.zeta_horizon.investment_portfolio_tracker.enums.InvestmentType;
+import com.zeta_horizon.investment_portfolio_tracker.enums.RiskLevel;
+
+import java.util.List;
+
 public interface InvestmentProductService {
+    List<InvestmentProductListDto> getAllActiveProducts();
+
+    InvestmentProductDto getProductById(Long id);
+
+    InvestmentProductDto createProduct(InvestmentProductCreateDto createDto);
+
+    InvestmentProductDto updateProduct(Long id, InvestmentProductUpdateDto updateDto);
+
+    void deleteProduct(Long id);
+
+    List<InvestmentProductListDto> filterProducts(InvestmentProductFilterDto filterDto);
+
+    List<InvestmentProductListDto> getProductsByRiskLevel(RiskLevel riskLevel);
+
+    List<InvestmentProductListDto> getProductsByType(InvestmentType type);
 }
