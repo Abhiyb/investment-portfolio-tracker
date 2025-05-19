@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "investment_products")
 public class InvestmentProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,13 +28,13 @@ public class InvestmentProduct {
     @Column(nullable = false)
     private RiskLevel riskLevel;
 
-    @Column(name = "minInvestment", nullable = false, precision = 12, scale = 2)
+    @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal minimumInvestment;
 
-    @Column(name = "expectedReturnRate", nullable = false, precision = 5, scale = 2)
+    @Column(nullable = false, precision = 5, scale = 2)
     private BigDecimal expectedAnnualReturnRate;
 
-    @Column(name = "currentNAV", nullable = false, precision = 10, scale = 2)
+    @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal currentNetAssetValuePerUnit;
 
     @Column(length = 500)
