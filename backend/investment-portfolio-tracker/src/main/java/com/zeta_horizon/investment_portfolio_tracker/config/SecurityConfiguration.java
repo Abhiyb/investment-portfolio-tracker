@@ -1,6 +1,6 @@
 package com.zeta_horizon.investment_portfolio_tracker.config;
 
-import com.zeta_horizon.investment_portfolio_tracker.service.UserService;
+import com.zeta_horizon.investment_portfolio_tracker.filters.JWTFilter;
 import com.zeta_horizon.investment_portfolio_tracker.service.impl.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,9 +15,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -25,6 +25,9 @@ public class SecurityConfiguration {
 
     @Autowired
     UserDetailsService userDetailsService;
+
+    @Autowired
+    private JWTFilter jwtFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -36,6 +39,7 @@ public class SecurityConfiguration {
                         .requestMatchers("register","login").permitAll() // restrict this endpoint
                         .anyRequest().authenticated()                     // allow others
                 )
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
