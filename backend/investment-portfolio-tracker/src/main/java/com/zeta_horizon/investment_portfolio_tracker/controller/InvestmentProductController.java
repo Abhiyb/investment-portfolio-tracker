@@ -82,6 +82,15 @@ public class InvestmentProductController {
                 .body(createdProduct);
     }
 
+    @GetMapping("admin/investments")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<SuccessResponse<List<InvestmentProductListDto>>> getAllProducts() {
+        List<InvestmentProductListDto> products = investmentProductService.getAllProducts();
+        return new ResponseEntity<>(new SuccessResponse<>(HttpStatus.OK.value(),
+                products, "Successfully fetched "+products.size()+" investment products from database",
+                LocalDateTime.now()), HttpStatus.OK);
+    }
+
     @PutMapping("admin/investments/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SuccessResponse<InvestmentProductDto>> updateProduct(
