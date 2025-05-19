@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 
 @Data
 public class InvestmentProductListDto {
-    private Long id;
+    private Integer id;
     private String name;
     private InvestmentType type;
     private RiskLevel riskLevel;

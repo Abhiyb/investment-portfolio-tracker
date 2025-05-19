@@ -47,8 +47,8 @@ public class InvestmentProductServiceImpl implements InvestmentProductService {
 
     @Override
     @Transactional(readOnly = true)
-    public InvestmentProductDto getProductById(Long id) {
-        InvestmentProduct product = investmentProductRepository.findById(id)
+    public InvestmentProductDto getProductById(Integer id) {
+        InvestmentProduct product = investmentProductRepository.findByIdAndIsActiveTrue(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Investment product not found with id: " + id));
 
         return modelMapper.map(product, InvestmentProductDto.class);
@@ -64,7 +64,7 @@ public class InvestmentProductServiceImpl implements InvestmentProductService {
     }
 
     @Override
-    public InvestmentProductDto updateProduct(Long id, InvestmentProductUpdateDto updateDto) {
+    public InvestmentProductDto updateProduct(Integer id, InvestmentProductUpdateDto updateDto) {
         InvestmentProduct existingProduct = investmentProductRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Investment product not found with id: " + id));
 
@@ -99,7 +99,7 @@ public class InvestmentProductServiceImpl implements InvestmentProductService {
     }
 
     @Override
-    public void deleteProduct(Long id) {
+    public void deleteProduct(Integer id) {
         // Soft delete - just set isActive to false
         InvestmentProduct existingProduct = investmentProductRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Investment product not found with id: " + id)

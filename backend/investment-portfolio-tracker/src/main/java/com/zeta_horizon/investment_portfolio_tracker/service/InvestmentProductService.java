@@ -11,13 +11,13 @@ public interface InvestmentProductService {
 
     List<InvestmentProductListDto> getAllProducts();
 
-    InvestmentProductDto getProductById(Long id);
+    InvestmentProductDto getProductById(Integer id);
 
     InvestmentProductDto createProduct(InvestmentProductCreateDto createDto);
 
-    InvestmentProductDto updateProduct(Long id, InvestmentProductUpdateDto updateDto);
+    InvestmentProductDto updateProduct(Integer id, InvestmentProductUpdateDto updateDto);
 
-    void deleteProduct(Long id);
+    void deleteProduct(Integer id);
 
     List<InvestmentProductListDto> filterProducts(InvestmentProductFilterDto filterDto);
 

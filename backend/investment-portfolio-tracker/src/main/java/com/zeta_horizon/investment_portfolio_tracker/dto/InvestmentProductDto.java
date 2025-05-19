@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class InvestmentProductDto {
-    private Long id;
+    private Integer id;
     private String name;
     private InvestmentType type;
     private RiskLevel riskLevel;

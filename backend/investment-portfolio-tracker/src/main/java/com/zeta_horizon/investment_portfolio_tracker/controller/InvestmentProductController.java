@@ -36,7 +36,7 @@ public class InvestmentProductController {
     }
 
     @GetMapping("investments/{id}")
-    public ResponseEntity<SuccessResponse<InvestmentProductDto>> getProductById(@PathVariable Long id) {
+    public ResponseEntity<SuccessResponse<InvestmentProductDto>> getProductById(@PathVariable Integer id) {
         InvestmentProductDto product = investmentProductService.getProductById(id);
         return new ResponseEntity<>(new SuccessResponse<>(HttpStatus.OK.value(),
                 product, "Successfully fetched investment product with id " + id,
@@ -94,7 +94,7 @@ public class InvestmentProductController {
     @PutMapping("admin/investments/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SuccessResponse<InvestmentProductDto>> updateProduct(
-            @PathVariable Long id,
+            @PathVariable Integer id,
             @Valid @RequestBody InvestmentProductUpdateDto updateDto) {
         InvestmentProductDto updatedProduct = investmentProductService.updateProduct(id, updateDto);
         return new ResponseEntity<>(new SuccessResponse<>(HttpStatus.OK.value(),
@@ -104,7 +104,7 @@ public class InvestmentProductController {
 
     @DeleteMapping("admin/investments/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<SuccessResponse<String>> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<SuccessResponse<String>> deleteProduct(@PathVariable Integer id) {
         investmentProductService.deleteProduct(id);
         return new ResponseEntity<>(new SuccessResponse<>(HttpStatus.OK.value(),
                 "Deleted", "Successfully deleted investment product with id " + id,
