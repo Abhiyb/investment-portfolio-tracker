@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("api")
 public class InvestmentProductController {
     private final InvestmentProductService investmentProductService;
 
