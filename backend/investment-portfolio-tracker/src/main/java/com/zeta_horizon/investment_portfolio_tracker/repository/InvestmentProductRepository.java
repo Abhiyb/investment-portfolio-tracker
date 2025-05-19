@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public interface InvestmentProductRepository extends JpaRepository<InvestmentProduct, Long> {
