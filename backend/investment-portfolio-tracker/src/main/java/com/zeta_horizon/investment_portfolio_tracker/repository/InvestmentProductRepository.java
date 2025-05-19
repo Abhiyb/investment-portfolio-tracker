@@ -16,14 +16,13 @@ public interface InvestmentProductRepository extends JpaRepository<InvestmentPro
     // Find all active products
     List<InvestmentProduct> findByIsActiveTrue();
 
+    InvestmentProduct findByIdAndIsActiveTrue(Long Id);
+
     // Find by type
     List<InvestmentProduct> findByTypeAndIsActiveTrue(InvestmentType type);
 
     // Find by risk level
     List<InvestmentProduct> findByRiskLevelAndIsActiveTrue(RiskLevel riskLevel);
-
-    // Find by minimum investment amount
-//    List<InvestmentProduct> findByMinInvestmentLessThanEqualAndIsActiveTrue(BigDecimal maxAmount);
 
     // Search by name
     List<InvestmentProduct> findByNameContainingIgnoreCaseAndIsActiveTrue(String name);

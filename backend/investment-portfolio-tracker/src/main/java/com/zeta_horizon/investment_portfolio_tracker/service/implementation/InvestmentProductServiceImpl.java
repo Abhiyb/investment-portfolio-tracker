@@ -94,9 +94,11 @@ public class InvestmentProductServiceImpl implements InvestmentProductService {
     @Override
     public void deleteProduct(Long id) {
         // Soft delete - just set isActive to false
-        InvestmentProduct existingProduct = investmentProductRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Investment product not found with id: " + id));
-
+        InvestmentProduct existingProduct = investmentProductRepository.findByIdAndIsActiveTrue(id);
+        if (existingProduct == null) {
+            throw new ResourceNotFoundException("Investment product not found with id: " + id);
+        }
+        System.out.println(existingProduct);
         existingProduct.setActive(false);
         investmentProductRepository.save(existingProduct);
     }
