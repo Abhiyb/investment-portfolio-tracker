@@ -40,11 +40,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
     public String verify(User user) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(),user.getPasswordHash()));
 
         if(authentication.isAuthenticated())
-            return JWTService.generateToken(user);
+            return JWTService.generateToken(getUserByEmail(user.getEmail()));
 
         return "failure";
     }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -24,9 +25,9 @@ public class JWTServiceImpl implements JWTService {
     @Value("${jwt.secret}")
     private String SECRET_KEY;
 
-
     public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("roles", List.of("ROLE_" + user.getRole().name()));
         return Jwts.builder()
                 .claims()
                 .add(claims)
@@ -81,6 +82,19 @@ public class JWTServiceImpl implements JWTService {
     public boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token); // Extract username from token
         return username.equals(userDetails.getUsername()) && !isTokenExpired(token); // Check match and expiration
+    }
+
+    @Override
+    public List<String> extractRoles(String token) {
+        Object rolesObj = getAllClaims(token).get("roles");
+
+        System.out.println(rolesObj);
+        if (rolesObj instanceof List<?>) {
+            return ((List<?>) rolesObj).stream()
+                    .map(Object::toString)
+                    .toList();
+        }
+        return List.of();
     }
 
     /**
