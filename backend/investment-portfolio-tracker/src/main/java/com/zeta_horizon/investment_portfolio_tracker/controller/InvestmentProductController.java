@@ -73,7 +73,7 @@ public class InvestmentProductController {
     // Admin endpoints
 
     @PostMapping("admin/investments")
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<InvestmentProductDto> createProduct(
             @Valid @RequestBody InvestmentProductCreateDto createDto) {
         InvestmentProductDto createdProduct = investmentProductService.createProduct(createDto);
@@ -97,8 +97,8 @@ public class InvestmentProductController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SuccessResponse<String>> deleteProduct(@PathVariable Long id) {
         investmentProductService.deleteProduct(id);
-        return new ResponseEntity<>(new SuccessResponse<>(HttpStatus.NO_CONTENT.value(),
+        return new ResponseEntity<>(new SuccessResponse<>(HttpStatus.OK.value(),
                 "Deleted", "Successfully deleted investment product with id " + id,
-                LocalDateTime.now()), HttpStatus.NO_CONTENT);
+                LocalDateTime.now()), HttpStatus.OK);
     }
 }
