@@ -55,17 +55,23 @@ CREATE DATABASE investment_tracker;
 
 Step 1 : Use application.properties with placeholders (already done in main branch)
 ``` bash
-spring.datasource.url=${DB_URL}
-spring.datasource.username=${DB_USERNAME}
-spring.datasource.password=${DB_PASSWORD}
+spring.datasource.url=${DATABASE_URL}
+spring.datasource.username=${DATABASE_USERNAME}
+spring.datasource.password=${DATABASE_PASSWORD}
+jwt.secret=${JWT_SECRET_KEY}
 ```
 
 Step 2 : Use .env file
 Create a .env file (never commit this file):
 ``` bash
-DB_URL=jdbc:mysql://localhost:3306/investment_tracker
-DB_USERNAME=root
-DB_PASSWORD=secret
+DATABASE_URL=jdbc:mysql://localhost:3306/investment_tracker
+DATABASE_USERNAME=root
+DATABASE_PASSWORD=password(REPLACE THIS)
+JWT_SECRET_KEY=key(REPLACE THIS)
+```
+Note: JWT secret key can be generated using below command and paste the key inside .env file
+``` bash
+openssl rand -base64 32
 ```
 
 Step 3 : Add .env to .gitignore

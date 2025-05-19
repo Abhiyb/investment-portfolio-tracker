@@ -10,13 +10,14 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface InvestmentProductRepository extends JpaRepository<InvestmentProduct, Long> {
+public interface InvestmentProductRepository extends JpaRepository<InvestmentProduct, Integer> {
     // Find all active products
     List<InvestmentProduct> findByIsActiveTrue();
 
-    InvestmentProduct findByIdAndIsActiveTrue(Long Id);
+    Optional<InvestmentProduct> findByIdAndIsActiveTrue(Integer Id);
 
     // Find by type
     List<InvestmentProduct> findByTypeAndIsActiveTrue(InvestmentType type);

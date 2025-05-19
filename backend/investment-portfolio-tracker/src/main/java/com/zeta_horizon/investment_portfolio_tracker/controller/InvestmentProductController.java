@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("api")
 public class InvestmentProductController {
     private final InvestmentProductService investmentProductService;
 
@@ -36,7 +35,7 @@ public class InvestmentProductController {
     }
 
     @GetMapping("investments/{id}")
-    public ResponseEntity<SuccessResponse<InvestmentProductDto>> getProductById(@PathVariable Long id) {
+    public ResponseEntity<SuccessResponse<InvestmentProductDto>> getProductById(@PathVariable Integer id) {
         InvestmentProductDto product = investmentProductService.getProductById(id);
         return new ResponseEntity<>(new SuccessResponse<>(HttpStatus.OK.value(),
                 product, "Successfully fetched investment product with id " + id,
@@ -82,10 +81,19 @@ public class InvestmentProductController {
                 .body(createdProduct);
     }
 
+    @GetMapping("admin/investments")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<SuccessResponse<List<InvestmentProductListDto>>> getAllProducts() {
+        List<InvestmentProductListDto> products = investmentProductService.getAllProducts();
+        return new ResponseEntity<>(new SuccessResponse<>(HttpStatus.OK.value(),
+                products, "Successfully fetched "+products.size()+" investment products from database",
+                LocalDateTime.now()), HttpStatus.OK);
+    }
+
     @PutMapping("admin/investments/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SuccessResponse<InvestmentProductDto>> updateProduct(
-            @PathVariable Long id,
+            @PathVariable Integer id,
             @Valid @RequestBody InvestmentProductUpdateDto updateDto) {
         InvestmentProductDto updatedProduct = investmentProductService.updateProduct(id, updateDto);
         return new ResponseEntity<>(new SuccessResponse<>(HttpStatus.OK.value(),
@@ -95,7 +103,7 @@ public class InvestmentProductController {
 
     @DeleteMapping("admin/investments/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<SuccessResponse<String>> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<SuccessResponse<String>> deleteProduct(@PathVariable Integer id) {
         investmentProductService.deleteProduct(id);
         return new ResponseEntity<>(new SuccessResponse<>(HttpStatus.OK.value(),
                 "Deleted", "Successfully deleted investment product with id " + id,
