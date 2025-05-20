@@ -15,6 +15,7 @@ import com.zeta_horizon.investment_portfolio_tracker.repository.TransactionRepos
 import com.zeta_horizon.investment_portfolio_tracker.service.PortfolioService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -23,6 +24,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class PortfolioServiceImpl implements PortfolioService {
 
     @Autowired
