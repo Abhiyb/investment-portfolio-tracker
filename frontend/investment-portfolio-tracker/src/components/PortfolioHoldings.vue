@@ -2,23 +2,6 @@
     <div class="portfolio-holdings">
       <h2 class="portfolio-title">Portfolio Holdings</h2>
       
-      <!-- Portfolio Summary -->
-      <div class="portfolio-summary">
-        <div class="summary-card">
-          <div class="summary-label">Total Invested Value</div>
-          <div class="summary-value">${{ formatNumber(portfolioData.totalInvestedValue) }}</div>
-        </div>
-        <div class="summary-card">
-          <div class="summary-label">Total Current Value</div>
-          <div class="summary-value">${{ formatNumber(portfolioData.totalCurrentValue) }}</div>
-        </div>
-        <div class="summary-card">
-          <div class="summary-label">Total Return</div>
-          <div class="summary-value" :class="getTotalReturnClass()">
-            ${{ formatNumber(getTotalReturn()) }} ({{ getTotalReturnPercentage() }}%)
-          </div>
-        </div>
-      </div>
       
       <!-- Loading state -->
       <div v-if="loading" class="loading-container">
@@ -42,6 +25,11 @@
       
       <!-- Holdings table -->
       <div v-else class="table-responsive">
+        <!-- Table info -->
+        <div v-if="totalHoldings > itemsPerPage" class="table-info">
+          <span>Showing {{ startIndex + 1 }} to {{ Math.min(endIndex, totalHoldings) }} of {{ totalHoldings }} holdings</span>
+        </div>
+        
         <table class="holdings-table">
           <thead>
             <tr>
@@ -55,7 +43,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="holding in portfolioData.holdings" :key="holding.id" class="holding-row">
+            <tr v-for="holding in paginatedHoldings" :key="holding.id" class="holding-row">
               <td class="investment-name">{{ holding.investmentProductName }}</td>
               <td>
                 <span class="investment-type" :class="holding.type.toLowerCase().replace('_', '-')">
@@ -63,26 +51,76 @@
                 </span>
               </td>
               <td>{{ formatNumber(holding.unitsOwned) }}</td>
-              <td>${{ formatNumber(holding.avgPurchasePrice) }}</td>
-              <td>${{ formatNumber(holding.currentValue) }}</td>
+              <td>&#8377;{{ formatNumber(holding.avgPurchasePrice) }}</td>
+              <td>&#8377;{{ formatNumber(holding.currentValue) }}</td>
               <td class="profit-cell">
                 <div class="profit" :class="{ 'profit-positive': holding.percentageReturn > 0, 'profit-negative': holding.percentageReturn < 0 }">
                   <span class="profit-arrow">
                     <svg v-if="holding.percentageReturn > 0" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
                     <svg v-else-if="holding.percentageReturn < 0" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
                   </span>
-                  <span>${{ formatNumber(holding.absoluteReturn) }} ({{ holding.percentageReturn }}%)</span>
+                  <span>&#8377;{{ formatNumber(holding.absoluteReturn) }} ({{ holding.percentageReturn }}%)</span>
                 </div>
               </td>
               <td class="actions-cell">
                 <div class="action-buttons">
-                  <button class="action-btn buy-btn" @click="buyHolding(holding)">Buy</button>
                   <button class="action-btn sell-btn" @click="sellHolding(holding)" :disabled="holding.unitsOwned <= 0">Sell</button>
                 </div>
               </td>
             </tr>
           </tbody>
         </table>
+        
+        <!-- Pagination -->
+        <div v-if="totalHoldings > itemsPerPage" class="pagination-container">
+          <div class="pagination">
+            <!-- Previous button -->
+            <button 
+              class="pagination-btn" 
+              :class="{ disabled: currentPage === 1 }"
+              @click="goToPage(currentPage - 1)"
+              :disabled="currentPage === 1"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+              Previous
+            </button>
+            
+            <!-- Page numbers -->
+            <div class="page-numbers">
+              <button
+                v-for="page in visiblePages"
+                :key="page"
+                class="page-btn"
+                :class="{ active: page === currentPage }"
+                @click="goToPage(page)"
+              >
+                {{ page }}
+              </button>
+            </div>
+            
+            <!-- Next button -->
+            <button 
+              class="pagination-btn" 
+              :class="{ disabled: currentPage === totalPages }"
+              @click="goToPage(currentPage + 1)"
+              :disabled="currentPage === totalPages"
+            >
+              Next
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+          </div>
+          
+          <!-- Items per page selector -->
+          <div class="items-per-page">
+            <label for="itemsPerPage">Items per page:</label>
+            <select id="itemsPerPage" v-model="itemsPerPage" @change="resetToFirstPage">
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
+            </select>
+          </div>
+        </div>
       </div>
     </div>
   </template>
@@ -135,7 +173,7 @@ const response = await fetch('http://localhost:8080/portfolio', {
       
       formatNumber(value) {
         if (value === null || value === undefined) return '0.00'
-        return Number(value).toLocaleString('en-US', {
+        return Number(value).toLocaleString('en-IN', {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2
         })
@@ -172,11 +210,14 @@ const response = await fetch('http://localhost:8080/portfolio', {
       },
       
       sellHolding(holding) {
-        if (holding.unitsOwned <= 0) return
-        console.log(`Selling ${holding.investmentProductName}`)
-        // In a real app, you would navigate to a sell page or open a modal
-        // this.$router.push(`/investments/${holding.investmentProductId}/sell`)
-      },
+      if (holding.unitsOwned <= 0) return;
+      console.log(`Selling ${holding.investmentProductName}`);
+      
+      // In a real app with Vue Router, you would use:
+      this.$router.push(`/sell-investment/${holding.id}`);
+      
+      
+    },
       
       goToInvestments() {
         console.log('Navigating to investments page')
@@ -192,7 +233,9 @@ const response = await fetch('http://localhost:8080/portfolio', {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     color: #1f2937;
     margin-bottom: 2rem;
+  
   }
+   
   
   .portfolio-title {
     font-size: 1.5rem;

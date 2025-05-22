@@ -1,20 +1,36 @@
 <template>
    
     <div class="main-content">
-      <PortfolioHoldings />
+        
+        <div class="row">
+          <div class="col">
+            <PortfolioSummary />
+          </div>
+          <div class="col">
+            <PortfolioAllocation />
+          </div>
+
+        </div>
+        
+            <PortfolioHoldings />
+         
+
     </div>
   
 </template>
 <script>
 
 import PortfolioHoldings from '../components/PortfolioHoldings.vue'
-
+import PortfolioSummary from '../components/PortfolioSummary.vue'
+import PortfolioAllocation from '../components/PortfolioAllocation.vue'
 
 export default {
     name: 'MyPortfolio',
   components: {
     
-    PortfolioHoldings
+    PortfolioHoldings,
+    PortfolioSummary,
+    PortfolioAllocation
   }
   
 }

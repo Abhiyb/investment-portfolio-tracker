@@ -114,8 +114,8 @@
   </template>
   
   <script>
-  import AppNavbar from '@/components/Navbar.vue'
-    import AppSidebar from '@/components/Sidebar.vue'
+  import AppNavbar from '../components/Navbar.vue'
+    import AppSidebar from '../components/Sidebar.vue'
   export default {
     name: 'BuyInvestment',
     components: {

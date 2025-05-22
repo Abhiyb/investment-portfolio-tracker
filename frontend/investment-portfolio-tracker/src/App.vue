@@ -6,7 +6,7 @@
   <div class="content-wrapper">
     <!-- Import Sidebar component -->
     <AppSidebar />
-    <router-view></router-view>
+    <RouterView/>
   </div></div>
 </template>
 

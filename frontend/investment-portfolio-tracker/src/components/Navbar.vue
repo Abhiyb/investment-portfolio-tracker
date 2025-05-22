@@ -31,7 +31,8 @@
     justify-content: space-between;
     align-items: center;
     height: 60px;
-    padding: 0 20px;
+    padding: 0 40px;
+    margin: 0 20px;
     background-color: white;
     border-bottom: 1px solid #e5e7eb;
   }
