@@ -78,6 +78,7 @@ public class SecurityConfiguration {
 
                 // Authorization rules:
                 .authorizeHttpRequests(auth -> auth
+                
                         // Allow anyone to access /auth/register and /auth/login
                         .requestMatchers("/auth/register", "/auth/login").permitAll()
 
