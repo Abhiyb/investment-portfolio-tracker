@@ -20,7 +20,7 @@ onMounted(async () => {
   try {
     const token = localStorage.getItem('token');
 
-    const response = await fetch('http://localhost:8080/portfolio/summary', {
+    const response = await fetch(import.meta.env.VITE_BACKEND_SERVER_URL, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
