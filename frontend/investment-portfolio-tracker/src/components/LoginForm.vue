@@ -17,7 +17,7 @@ const handleLogin = async () => {
     try {
         const response = await axiosInstance.post('/auth/login', {
             email: email.value,
-            passwordHash: password.value // Use correct field names
+            passwordHash: password.value 
         }, {
             headers: {
                 'Content-Type': 'application/json'
@@ -40,7 +40,7 @@ const handleLogin = async () => {
 
 <template>
     <div
-        class="px-8 h-screen py-20 md:px-12 lg:px-20 flex items-center bg-white justify-center backdrop-blur-3xl !bg-cover !bg-center !bg-no-repeat"
+        class="px-8 h-screen p-20 md:px-12 lg:px-20 flex items-center bg-white justify-center backdrop-blur-3xl !bg-cover !bg-center !bg-no-repeat"
 
     >
 
