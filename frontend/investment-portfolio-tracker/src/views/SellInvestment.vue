@@ -1,4 +1,11 @@
 <template>
+  <div class="app-container">
+    <!-- Import Navbar component -->
+    <AppNavbar />
+  
+  <div class="content-wrapper">
+    <!-- Import Sidebar component -->
+    <AppSidebar />
     <div class="sell-investment">
       <!-- Back navigation -->
       <div class="back-link">
@@ -145,7 +152,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div></div></div>
   </template>
   
   <script>

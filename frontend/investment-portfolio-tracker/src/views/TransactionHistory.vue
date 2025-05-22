@@ -1,6 +1,12 @@
 <template>
     
+    <div class="app-container">
+    <!-- Import Navbar component -->
+    <AppNavbar />
   
+  <div class="content-wrapper">
+    <!-- Import Sidebar component -->
+    <AppSidebar />
         <!-- Main Content -->
         <main class="main-content">
           <div class="page-header">
@@ -97,15 +103,21 @@
             </table>
           </div>
         </main>
+  </div>
+    </div>
      
   </template>
   
   <script>
-
+import AppNavbar from '../components/Navbar.vue'
+import AppSidebar from '../components/Sidebar.vue'
   
   export default {
     name: 'TransactionHistory',
-    
+    components: {
+      AppNavbar,
+      AppSidebar
+    },
     data() {
       return {
         transactions: [],
