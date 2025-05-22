@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface PortfolioRepository extends JpaRepository<Portfolio, UUID> {
+public interface PortfolioRepository extends JpaRepository<Portfolio, Integer> {
 
    // list all the portfolios of a particular user
    List<Portfolio> findByUser(User user);
