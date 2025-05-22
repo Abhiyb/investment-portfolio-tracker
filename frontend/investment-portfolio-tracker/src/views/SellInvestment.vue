@@ -226,7 +226,7 @@
         const numericId = parseInt(id);
         console.log('Making API call with ID:', numericId);
         
-        const response = await fetch(`http://localhost:8080/portfolio/${numericId}`, {
+        const response = await fetch(import.meta.env.VITE_BACKEND_SERVER_URL+`/portfolio/${numericId}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -313,7 +313,7 @@
     console.log('Sending sell request:', sellRequest);
     
     // Make the API call
-    const response = await fetch('http://localhost:8080/portfolio/sell', {
+    const response = await fetch(import.meta.env.VITE_BACKEND_SERVER_URL+'/sell', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

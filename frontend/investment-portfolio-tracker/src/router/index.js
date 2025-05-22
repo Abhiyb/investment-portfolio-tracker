@@ -29,7 +29,7 @@ const router = createRouter({
         name: 'register',
         component: RegisterView
     },
-    { path: '/:catchAll(.*)', name: 'NotFound', component: NotFoundView },
+    
     { path: '/transactions', component: TransactionHistory },
     { path: '/BuyInvestment', component: BuyInvestment },
     { path: '/myportfolio', component: MyPortfolio },
@@ -39,6 +39,7 @@ const router = createRouter({
         component: SellInvestment,
         props: true
     },
+    { path: '/:catchAll(.*)', name: 'NotFound', component: NotFoundView },
 
     ]
 })

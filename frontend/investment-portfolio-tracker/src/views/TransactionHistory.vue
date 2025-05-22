@@ -142,7 +142,7 @@ import AppSidebar from '../components/Sidebar.vue'
   try {
     const token = localStorage.getItem('token') // assuming you store it here after login
 
-    const response = await fetch('http://localhost:8080/portfolio/transactions', {
+    const response = await fetch(import.meta.env.VITE_BACKEND_SERVER_URL+'/transactions', {
       headers: {
         'Authorization': `Bearer ${token}`
       }

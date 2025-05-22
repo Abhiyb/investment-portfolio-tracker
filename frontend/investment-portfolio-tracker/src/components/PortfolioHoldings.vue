@@ -151,7 +151,7 @@
           
           const token = localStorage.getItem('token')  // or wherever your token is stored
 
-const response = await fetch('http://localhost:8080/portfolio', {
+const response = await fetch(import.meta.env.VITE_BACKEND_SERVER_URL, {
   headers: {
     'Authorization': `Bearer ${token}`,
     'Content-Type': 'application/json'
