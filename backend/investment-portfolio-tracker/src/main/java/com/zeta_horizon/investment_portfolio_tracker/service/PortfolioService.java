@@ -13,4 +13,6 @@ public interface PortfolioService {
     PortfolioItemDto sellInvestment(User user, SellInvestmentRequestDto request);
 
     TransactionHistoryResponseDto getTransactionHistory(User user);
+
+    PortfolioItemDto getInvestmentById(User user, Integer id);
 }

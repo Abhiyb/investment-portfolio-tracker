@@ -6,6 +6,7 @@ import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 import Button from "primevue/button"
 import 'primeicons/primeicons.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 
 
