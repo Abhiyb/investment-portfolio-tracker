@@ -26,7 +26,7 @@
           <span>Investments</span>
         </router-link>
   
-        <router-link to="/myportfolio" class="sidebar-link" active-class="active">
+        <router-link to="/myportfolio" v-if="!isAdmin" class="sidebar-link" active-class="active">
           <i class="icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -37,7 +37,7 @@
           <span>Portfolio</span>
         </router-link>
   
-        <router-link to="/transactions" class="sidebar-link" active-class="active">
+        <router-link to="/transactions" v-if="!isAdmin" class="sidebar-link" active-class="active">
           <i class="icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -93,10 +93,48 @@
   </template>
   
   <script>
-  export default {
-    name: 'AppSidebar'
-  }
-  </script>
+import { ref, computed, onMounted, onUnmounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
+
+export default {
+  name: "AppSidebar",
+  setup() {
+    const isAdmin = ref(false);
+
+    // Try to get user data if available (you would normally get this from an API or local storage)
+    onMounted(() => {
+      // For demo purposes, we're using placeholder data
+      // In a real app, you would fetch this from an API using the JWT token
+      const token = localStorage.getItem("token");
+      if (token) {
+        try {
+          // Extract payload from JWT
+          const base64Url = token.split(".")[1];
+          const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+          const payload = JSON.parse(window.atob(base64));
+
+       
+
+          // Assuming your JWT contains role information
+          isAdmin.value =
+            Array.isArray(payload.roles) &&
+            payload.roles.includes("ROLE_ADMIN");
+        } catch (error) {
+          console.error("Error parsing JWT:", error);
+          isAdmin.value = false;
+        }
+      }
+    });
+
+
+    
+
+    return {
+      isAdmin,
+    };
+  },
+};
+</script>
   
   <style>
   .sidebar {

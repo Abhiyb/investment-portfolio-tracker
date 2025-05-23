@@ -96,8 +96,8 @@
                     <div class="investment-name">{{ transaction.investmentProductName }}</div>
                   </td>
                   <td>{{ formatNumber(transaction.units) }}</td>
-                  <td>${{ formatNumber(transaction.navAtTxn) }}</td>
-                  <td>${{ formatNumber(transaction.amount) }}</td>
+                  <td>&#8377;{{ formatNumber(transaction.navAtTxn) }}</td>
+                  <td>&#8377;{{ formatNumber(transaction.amount) }}</td>
                 </tr>
               </tbody>
             </table>
@@ -142,7 +142,7 @@ import AppSidebar from '../components/Sidebar.vue'
   try {
     const token = localStorage.getItem('token') // assuming you store it here after login
 
-    const response = await fetch(import.meta.env.VITE_BACKEND_SERVER_URL+'/transactions', {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_SERVER_URL}/portfolio/transactions`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -166,7 +166,7 @@ import AppSidebar from '../components/Sidebar.vue'
       formatDate(dateTimeString) {
         if (!dateTimeString) return ''
         const date = new Date(dateTimeString)
-        return date.toLocaleDateString('en-US', { 
+        return date.toLocaleDateString('en-IN', { 
           year: 'numeric', 
           month: 'short', 
           day: 'numeric' 
@@ -176,7 +176,7 @@ import AppSidebar from '../components/Sidebar.vue'
       formatTime(dateTimeString) {
         if (!dateTimeString) return ''
         const date = new Date(dateTimeString)
-        return date.toLocaleTimeString('en-US', { 
+        return date.toLocaleTimeString('en-IN', { 
           hour: '2-digit', 
           minute: '2-digit'
         })
@@ -184,7 +184,7 @@ import AppSidebar from '../components/Sidebar.vue'
       
       formatNumber(value) {
         if (value === null || value === undefined) return ''
-        return Number(value).toLocaleString('en-US', {
+        return Number(value).toLocaleString('en-IN', {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2
         })

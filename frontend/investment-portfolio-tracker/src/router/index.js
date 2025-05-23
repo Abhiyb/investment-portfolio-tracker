@@ -5,7 +5,7 @@ import NotFoundView from "../views/NotFoundView.vue";
 import DashboardView from "../views/DashboardView.vue";
 import RegisterView from "../views/RegisterView.vue";
 
-
+import InvestmentView from "../views/InvestmentView.vue";
 import TransactionHistory from '../views/TransactionHistory.vue'
 import BuyInvestment from '../views/BuyInvestment.vue'
 import MyPortfolio from '../views/MyPortfolio.vue'
@@ -29,6 +29,11 @@ const router = createRouter({
         name: 'register',
         component: RegisterView
     },
+    {
+        path: '/investments',
+        name: 'investment',
+        component: InvestmentView,
+      },
     
     { path: '/transactions', component: TransactionHistory },
     { path: '/BuyInvestment', component: BuyInvestment },
@@ -37,6 +42,12 @@ const router = createRouter({
         path: '/sell-investment/:id',
         name: 'SellInvestment',
         component: SellInvestment,
+        props: true
+    },
+    {
+        path: '/buy-investment/:id',
+        name: 'BuyInvestment',
+        component: BuyInvestment,
         props: true
     },
     { path: '/:catchAll(.*)', name: 'NotFound', component: NotFoundView },

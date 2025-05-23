@@ -1,129 +1,73 @@
 <template>
-    <div class="portfolio-holdings">
-      <h2 class="portfolio-title">Portfolio Holdings</h2>
-      
-      
-      <!-- Loading state -->
-      <div v-if="loading" class="loading-container">
-        <div class="loading-spinner"></div>
-        <p>Loading portfolio data...</p>
-      </div>
-      
-      <!-- Error state -->
-      <div v-else-if="error" class="error-container">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-        <p>{{ error }}</p>
-        <button @click="fetchPortfolioData" class="retry-button">Try Again</button>
-      </div>
-      
-      <!-- Empty state -->
-      <div v-else-if="portfolioData.holdings.length === 0" class="empty-container">
-        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-        <p>No holdings in your portfolio</p>
-        <button @click="goToInvestments" class="action-btn primary-btn">Browse Investments</button>
-      </div>
-      
-      <!-- Holdings table -->
-      <div v-else class="table-responsive">
-        <!-- Table info -->
-        <div v-if="totalHoldings > itemsPerPage" class="table-info">
-          <span>Showing {{ startIndex + 1 }} to {{ Math.min(endIndex, totalHoldings) }} of {{ totalHoldings }} holdings</span>
-        </div>
-        
-        <table class="holdings-table">
-          <thead>
-            <tr>
-              <th>Investment</th>
-              <th>Type</th>
-              <th>Units</th>
-              <th>Avg. Cost</th>
-              <th>Current Value</th>
-              <th>Profit/Loss</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="holding in paginatedHoldings" :key="holding.id" class="holding-row">
-              <td class="investment-name">{{ holding.investmentProductName }}</td>
-              <td>
-                <span class="investment-type" :class="holding.type.toLowerCase().replace('_', '-')">
-                  {{ formatType(holding.type) }}
-                </span>
-              </td>
-              <td>{{ formatNumber(holding.unitsOwned) }}</td>
-              <td>&#8377;{{ formatNumber(holding.avgPurchasePrice) }}</td>
-              <td>&#8377;{{ formatNumber(holding.currentValue) }}</td>
-              <td class="profit-cell">
-                <div class="profit" :class="{ 'profit-positive': holding.percentageReturn > 0, 'profit-negative': holding.percentageReturn < 0 }">
-                  <span class="profit-arrow">
-                    <svg v-if="holding.percentageReturn > 0" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
-                    <svg v-else-if="holding.percentageReturn < 0" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-                  </span>
-                  <span>&#8377;{{ formatNumber(holding.absoluteReturn) }} ({{ holding.percentageReturn }}%)</span>
-                </div>
-              </td>
-              <td class="actions-cell">
-                <div class="action-buttons">
-                  <button class="action-btn sell-btn" @click="sellHolding(holding)" :disabled="holding.unitsOwned <= 0">Sell</button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        
-        <!-- Pagination -->
-        <div v-if="totalHoldings > itemsPerPage" class="pagination-container">
-          <div class="pagination">
-            <!-- Previous button -->
-            <button 
-              class="pagination-btn" 
-              :class="{ disabled: currentPage === 1 }"
-              @click="goToPage(currentPage - 1)"
-              :disabled="currentPage === 1"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-              Previous
-            </button>
-            
-            <!-- Page numbers -->
-            <div class="page-numbers">
-              <button
-                v-for="page in visiblePages"
-                :key="page"
-                class="page-btn"
-                :class="{ active: page === currentPage }"
-                @click="goToPage(page)"
-              >
-                {{ page }}
-              </button>
-            </div>
-            
-            <!-- Next button -->
-            <button 
-              class="pagination-btn" 
-              :class="{ disabled: currentPage === totalPages }"
-              @click="goToPage(currentPage + 1)"
-              :disabled="currentPage === totalPages"
-            >
-              Next
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-            </button>
-          </div>
-          
-          <!-- Items per page selector -->
-          <div class="items-per-page">
-            <label for="itemsPerPage">Items per page:</label>
-            <select id="itemsPerPage" v-model="itemsPerPage" @change="resetToFirstPage">
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="15">15</option>
-              <option value="20">20</option>
-            </select>
-          </div>
-        </div>
-      </div>
+  <div class="portfolio-holdings">
+    <h2 class="portfolio-title">Portfolio Holdings</h2>
+
+    <!-- Loading state -->
+    <div v-if="loading" class="loading-container">
+      <div class="loading-spinner"></div>
+      <p>Loading portfolio data...</p>
     </div>
-  </template>
+
+    <!-- Error state -->
+    <div v-else-if="error" class="error-container">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+      <p>{{ error }}</p>
+      <button @click="fetchPortfolioData" class="retry-button">Try Again</button>
+    </div>
+
+    <!-- Empty state -->
+    <div v-else-if="portfolioData.holdings.length === 0" class="empty-container">
+      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+      <p>No holdings in your portfolio</p>
+      <button @click="goToInvestments" class="action-btn primary-btn">Browse Investments</button>
+    </div>
+
+    <!-- Holdings table -->
+    <div v-else class="table-responsive">
+      <table class="holdings-table">
+        <thead>
+          <tr>
+            <th>Investment</th>
+            <th>Type</th>
+            <th>Units</th>
+            <th>Avg. Cost</th>
+            <th>Current Value</th>
+            <th>Profit/Loss</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="holding in portfolioData.holdings" :key="holding.id" class="holding-row">
+            <td class="investment-name">{{ holding.investmentProductName }}</td>
+            <td>
+              <span class="investment-type" :class="holding.type.toLowerCase().replace('_', '-')">
+                {{ formatType(holding.type) }}
+              </span>
+            </td>
+            <td>{{ formatNumber(holding.unitsOwned) }}</td>
+            <td>&#8377;{{ formatNumber(holding.avgPurchasePrice) }}</td>
+            <td>&#8377;{{ formatNumber(holding.currentValue) }}</td>
+            <td class="profit-cell">
+              <div class="profit" :class="{ 'profit-positive': holding.percentageReturn > 0, 'profit-negative': holding.percentageReturn < 0 }">
+                <span class="profit-arrow">
+                  <svg v-if="holding.percentageReturn > 0" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+                  <svg v-else-if="holding.percentageReturn < 0" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </span>
+                <span>&#8377;{{ formatNumber(holding.absoluteReturn) }} ({{ holding.percentageReturn }}%)</span>
+              </div>
+            </td>
+            <td class="actions-cell">
+              <div class="action-buttons">
+
+                <button class="action-btn sell-btn" @click="sellHolding(holding)" :disabled="holding.unitsOwned <= 0">Sell</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</template>
   
   <script>
   export default {
@@ -139,6 +83,7 @@
         error: null
       }
     },
+    
     created() {
       this.fetchPortfolioData()
     },
@@ -151,7 +96,7 @@
           
           const token = localStorage.getItem('token')  // or wherever your token is stored
 
-const response = await fetch(import.meta.env.VITE_BACKEND_SERVER_URL, {
+const response = await fetch(`${import.meta.env.VITE_BACKEND_SERVER_URL}/portfolio`, {
   headers: {
     'Authorization': `Bearer ${token}`,
     'Content-Type': 'application/json'

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -133,6 +134,13 @@ public class InvestmentProductServiceImpl implements InvestmentProductService {
     public List<InvestmentProductListDto> getProductsByRiskLevel(RiskLevel riskLevel) {
         return investmentProductRepository.findByRiskLevelAndIsActiveTrue(riskLevel).stream()
                 .map(product -> modelMapper.map(product, InvestmentProductListDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> getInvestmentTypes() {
+        return Arrays.stream(InvestmentType.values())
+                .map(Enum::name)
                 .collect(Collectors.toList());
     }
 

@@ -313,7 +313,7 @@
     console.log('Sending sell request:', sellRequest);
     
     // Make the API call
-    const response = await fetch(import.meta.env.VITE_BACKEND_SERVER_URL+'/sell', {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_SERVER_URL}/portfolio/sell`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
