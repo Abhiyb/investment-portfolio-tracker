@@ -33,8 +33,8 @@ public class UserController {
     }
 
     @PostMapping("/auth/login")
-    public String loginUser(@RequestBody User user) {
-        return userService.verify(user);
+    public ResponseEntity<?> loginUser(@RequestBody User user) {
+        return new ResponseEntity<>(userService.verify(user),HttpStatus.OK);
     }
 
     @PostMapping("/auth/register")

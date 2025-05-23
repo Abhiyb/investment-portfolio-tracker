@@ -51,6 +51,13 @@ public class PortfolioController {
         return ResponseEntity.ok(portfolioService.getTransactionHistory(user));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<PortfolioItemDto> getPortfolioById(@RequestHeader("Authorization") String bearer, @PathVariable Integer id){
+        String username = getUserName(bearer);
+        User user = userService.getUserByEmail(username);
+        return ResponseEntity.ok(portfolioService.getInvestmentById(user,id));
+    }
+
     public String getUserName(String bearerToken) {
         String token = bearerToken.substring(7);
         return jwtService.extractUsername(token);

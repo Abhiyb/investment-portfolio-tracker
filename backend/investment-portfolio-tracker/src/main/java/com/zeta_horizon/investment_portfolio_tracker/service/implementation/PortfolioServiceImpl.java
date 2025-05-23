@@ -14,7 +14,7 @@ import com.zeta_horizon.investment_portfolio_tracker.repository.PortfolioReposit
 import com.zeta_horizon.investment_portfolio_tracker.repository.TransactionRepository;
 import com.zeta_horizon.investment_portfolio_tracker.service.PortfolioService;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -22,20 +22,25 @@ import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class PortfolioServiceImpl implements PortfolioService {
 
-    @Autowired
-    PortfolioRepository portfolioRepository;
-    @Autowired
-    InvestmentProductRepository investmentProductRepository;
-    @Autowired
-    TransactionRepository transactionRepository;
+    private final PortfolioRepository portfolioRepository;
+    private final InvestmentProductRepository investmentProductRepository;
+    private final TransactionRepository transactionRepository;
+
+    public PortfolioServiceImpl(PortfolioRepository portfolioRepository,
+                                InvestmentProductRepository investmentProductRepository,
+                                TransactionRepository transactionRepository) {
+        this.portfolioRepository = portfolioRepository;
+        this.investmentProductRepository = investmentProductRepository;
+        this.transactionRepository = transactionRepository;
+    }
+
     @Override
     public PortfolioResponseDto getUserPortfolio(User user) {
-
         List<Portfolio> portfolios = portfolioRepository.findByUser(user);
 
         List<PortfolioItemDto> holdings = portfolios.stream()
@@ -54,10 +59,10 @@ public class PortfolioServiceImpl implements PortfolioService {
                 .totalCurrentValue(totalCurrentValue)
                 .build();
     }
+
     @Transactional
     @Override
     public PortfolioItemDto buyInvestment(User user, BuyInvestmentRequestDto request) {
-
         InvestmentProduct product = investmentProductRepository.findById(request.getInvestmentProductId())
                 .orElseThrow(() -> new InvalidInvestmentException("Investment product not found"));
         if (!product.isActive()) {
@@ -92,6 +97,8 @@ public class PortfolioServiceImpl implements PortfolioService {
         //save the portfolio
         Portfolio savedPortfolio = portfolioRepository.save(portfolio);
 
+        // reduce units in investmentProduct
+
         // Record transaction
         Transaction transaction = Transaction.builder()
                 .user(user)
@@ -102,10 +109,7 @@ public class PortfolioServiceImpl implements PortfolioService {
                 .txnDate(LocalDateTime.now())
                 .build();
 
-
-
         transactionRepository.save(transaction);
-
 
         return mapToPortfolioItemDto(savedPortfolio);
     }
@@ -113,7 +117,6 @@ public class PortfolioServiceImpl implements PortfolioService {
     @Override
     @Transactional
     public PortfolioItemDto sellInvestment(User user, SellInvestmentRequestDto request) {
-
         InvestmentProduct product = investmentProductRepository.findById(request.getInvestmentProductId())
                 .orElseThrow(() -> new InvalidInvestmentException("Investment product not found"));
 
@@ -128,9 +131,16 @@ public class PortfolioServiceImpl implements PortfolioService {
         // Subtract units
         portfolio.setUnitsOwned(portfolio.getUnitsOwned().subtract(request.getUnits()));
 
-        // Average purchase price remains the same for simplicity
-        // Save portfolio
-        Portfolio savedPortfolio = portfolioRepository.save(portfolio);
+        // if units is 0 then delete that investment
+        if (portfolio.getUnitsOwned().compareTo(BigDecimal.ZERO) == 0) {
+            log.info("deleting item");
+            portfolioRepository.deleteById(portfolio.getId());
+        }
+        else {
+            // Average purchase price remains the same for simplicity
+            // Save portfolio
+            Portfolio savedPortfolio = portfolioRepository.save(portfolio);
+        }
 
         Transaction transaction = Transaction.builder()
                 .user(user)
@@ -141,8 +151,8 @@ public class PortfolioServiceImpl implements PortfolioService {
                 .txnDate(LocalDateTime.now())
                 .build();
 
-        return mapToPortfolioItemDto(savedPortfolio);
-
+        transactionRepository.save(transaction);
+        return mapToPortfolioItemDto(portfolio);
     }
 
     @Override
@@ -167,10 +177,19 @@ public class PortfolioServiceImpl implements PortfolioService {
                 .build();
     }
 
+    @Override
+    public PortfolioItemDto getInvestmentById(User user, Integer id) {
+
+        Portfolio product = portfolioRepository.findById(id).get();
+
+        return mapToPortfolioItemDto(product);
+    }
+
+
     private PortfolioItemDto mapToPortfolioItemDto(Portfolio portfolio){
-         InvestmentProduct product = portfolio.getInvestmentProduct();
-         BigDecimal investedValue = portfolio.getUnitsOwned().multiply(portfolio.getAvgPurchasePrice()).setScale(2, RoundingMode.HALF_UP);
-         BigDecimal currentValue = portfolio.getUnitsOwned().multiply(product.getCurrentNetAssetValuePerUnit()).setScale(2,RoundingMode.HALF_UP);
+        InvestmentProduct product = portfolio.getInvestmentProduct();
+        BigDecimal investedValue = portfolio.getUnitsOwned().multiply(portfolio.getAvgPurchasePrice()).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal currentValue = portfolio.getUnitsOwned().multiply(product.getCurrentNetAssetValuePerUnit()).setScale(2,RoundingMode.HALF_UP);
         BigDecimal absoluteReturn = currentValue.subtract(investedValue);
         BigDecimal percentageReturn = investedValue.compareTo(BigDecimal.ZERO) > 0
                 ? absoluteReturn.multiply(new BigDecimal("100")).divide(investedValue, 2, RoundingMode.HALF_UP)

@@ -24,4 +24,6 @@ public interface InvestmentProductService {
     List<InvestmentProductListDto> getProductsByRiskLevel(RiskLevel riskLevel);
 
     List<InvestmentProductListDto> getProductsByType(InvestmentType type);
+
+    List<String> getInvestmentTypes();
 }

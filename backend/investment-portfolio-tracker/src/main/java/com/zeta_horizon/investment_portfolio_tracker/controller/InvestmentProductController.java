@@ -42,6 +42,14 @@ public class InvestmentProductController {
                 LocalDateTime.now()), HttpStatus.OK);
     }
 
+    @GetMapping("/investmentTypes")
+    public ResponseEntity<SuccessResponse<List<String>>> getInvestmentTypes() {
+        List<String> investmentTypes = investmentProductService.getInvestmentTypes();
+        return new ResponseEntity<>(new SuccessResponse<>(HttpStatus.OK.value(),
+                investmentTypes, "Successfully fetched all investment types",
+                LocalDateTime.now()), HttpStatus.OK);
+    }
+
     @GetMapping("investments/type/{type}")
     public ResponseEntity<SuccessResponse<List<InvestmentProductListDto>>> getProductsByType(
             @PathVariable InvestmentType type) {
