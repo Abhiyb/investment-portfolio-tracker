@@ -1,6 +1,6 @@
 // services/investmentUserService.js
 // Base API URL - you should replace this with your actual backend URL
-const API_URL = 'http://localhost:9080';
+const API_URL = import.meta.env.VITE_BACKEND_SERVER_URL;
 
 /**
  * Service for user investment related API calls
