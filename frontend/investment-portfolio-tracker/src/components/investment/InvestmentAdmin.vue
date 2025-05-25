@@ -14,8 +14,8 @@
               </div>
             </div>
             <p class="subtitle">
-              Create, manage, and monitor all investment products in your
-              portfolio.
+              Add, edit, and control all investment offerings for your
+              organization.
             </p>
           </div>
           <div class="header-actions">
