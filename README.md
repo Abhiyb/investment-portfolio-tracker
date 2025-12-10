@@ -21,18 +21,6 @@ investment-portfolio-tracker/
 
 ---
 
-## Team Members & Modules
-
-| Name                     | Module Number | Module Description                       |
-|--------------------------|---------------|------------------------------------------|
-| Abhijit Singh            | 1             | User Registration & Authentication       |
-| Darshan R M              | 2             | Investment Product Listing & Selection   |
-| Gowrisubha Kalimuthu     | 3             | Portfolio Management                     |
-| Shashank M Patil         | 4             | Portfolio Analytics & Insights           |
-| Nareshkumar G            | 5             | Support & Helpdesk System                |
-
----
-
 ## Technologies Used
 Backend: Java, Spring Boot, Spring Data JPA, MySQL, JUnit, Lombok, Docker
 
@@ -133,7 +121,6 @@ All team members will push code to their own branches. Pull Requests (PRs) must 
 
 ``` bash
 # Clone the repository (only the first time)
-git clone https://github.com/darshan2156/investment-portfolio-tracker.git
 
 cd investment-portfolio-tracker
 
@@ -172,9 +159,5 @@ git pull origin main
 2. Checklist Tracking: Shared Docs
 
 ---
-
-## Documentation Index
-
-1. ER Diagram
 
 ---
