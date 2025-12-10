@@ -82,8 +82,6 @@ Step 4 : Add .env file to environment variables. Application name in top right c
 ### How To Run Backend (Spring Boot)
 
 Step 1 : Clone the repository:
-``` bash 
-git clone https://github.com/darshan2156/investment-portfolio-tracker.git
 ```
 
 Step 2 : Navigate to the backend directory:
